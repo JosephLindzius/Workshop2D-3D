@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Get Setup With Canvas 2D</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body>
+<div class="canvasWrapper">
+    <canvas id="canvas" width="800" height="600"></canvas>
+</div>
+
+<script>
+    const canvas = document.getElementById('canvas');
+    let context = canvas.getContext("2d");
+
+    let speed = 1;
+    let xCoord = 0;
+    let bigMouth = 0.5;
+    let mouthSize = 40;
+
+    function animate() {
+        const eyeOffsetX = 300;
+        const eyeOffsetY = 250;
+        const mouthOffsetX = 300;
+        const mouthOffsetY = 375;
+        const bounceAmp = 5;
+
+
+        context.clearRect(0, 0, 800, 600);
+
+        //head
+
+        context.beginPath();
+        drawCircle(xCoord+canvas.width/2, bounceAmp*Math.sin(xCoord/20)+canvas.height/2, 200, 200, 0);
+        context.fillStyle = "yellow";
+        context.fill();
+
+        //eyes
+        for (let i = 0; i < 2; i++) {
+            context.beginPath();
+            drawCircle(xCoord+eyeOffsetX+canvas.width/6*i, bounceAmp*Math.sin(xCoord/20)+eyeOffsetY, 40, 50, 0);
+            context.fillStyle = "white";
+            context.fill();
+            context.beginPath();
+            drawCircle(xCoord+eyeOffsetX+canvas.width/6*i, bounceAmp*Math.sin(xCoord/20)+eyeOffsetY, 30, 40, 0);
+            context.fillStyle = "purple";
+            context.fill();
+
+        }
+
+        //mouth
+        context.beginPath();
+        context.arc(xCoord+mouthOffsetX+canvas.width/8, bounceAmp*Math.sin(xCoord/20)+mouthOffsetY, mouthSize, 0, Math.PI);
+        context.fillStyle = "red";
+        context.fill();
+        context.stroke();
+
+
+        if (xCoord > canvas.width - 200*3 || xCoord < - 200) {
+            speed = -speed;
+        }
+
+        if (mouthSize > 80 || mouthSize < 40) {
+            bigMouth = -bigMouth;
+        }
+
+        mouthSize += bigMouth;
+        xCoord += speed;
+
+        requestAnimationFrame(animate);
+
+
+    }
+
+    function drawCircle(x, y, radiusX, radiusY, rotation) {
+        context.beginPath();
+        context.ellipse(x, y, radiusX, radiusY, rotation, 0, 2 * Math.PI);
+        context.stroke();
+    }
+
+    animate();
+
+
+</script>
+</body>
+</html>

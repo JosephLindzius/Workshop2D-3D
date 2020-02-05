@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Working with Three JS</title>
+    <link rel="stylesheet" href="../../assets/css/style.css">
+    <style>
+        body {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+<script src="../../Exercises/2-Working-with-ThreeJS/three.js"></script>
+<script>
+    let scene = new THREE.Scene();
+    let camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+    let renderer = new THREE.WebGLRenderer();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    document.body.appendChild( renderer.domElement );
+
+    renderer.setClearColor (0xF0F7DA, 1);
+
+    let light = new THREE.PointLight( 0xff0000, 1000, 10000 );
+    light.position.x = 2;
+    light.position.y = 2;
+    scene.add( light );
+
+    light = new THREE.PointLight( 0xff0000, 1000, 10000 );
+    light.position.x = -2;
+    light.position.y = 2;
+    scene.add( light );
+
+    var spotLight = new THREE.SpotLight( 0xffffff );
+    spotLight.position.set( 100, 1000, 100 );
+
+    spotLight.castShadow = true;
+
+    spotLight.shadow.mapSize.width = 1024;
+    spotLight.shadow.mapSize.height = 1024;
+
+    spotLight.shadow.camera.near = 500;
+    spotLight.shadow.camera.far = 4000;
+    spotLight.shadow.camera.fov = 30;
+
+    scene.add( spotLight );
+
+    let geometry = new THREE.BoxGeometry();
+    let material = new THREE.MeshPhongMaterial( { color: 0x0336FF } );
+    let cube = new THREE.Mesh( geometry, material );
+    scene.add( cube );
+
+    geometry = new THREE.SphereGeometry();
+    material = new THREE.MeshPhongMaterial( { color: 0x0336FF } );
+    let sphere = new THREE.Mesh( geometry, material );
+    sphere.position.y = 2;
+    scene.add( sphere );
+
+    geometry = new THREE.ConeGeometry();
+    material = new THREE.MeshPhongMaterial( { color: 0x0336FF } );
+    let cone = new THREE.Mesh( geometry, material );
+    cone.position.y = -2;
+    scene.add( cone );
+
+    camera.position.z = 5;
+
+    function animate () {
+        requestAnimationFrame( animate );
+
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        sphere.rotation.x += 0.01;
+        sphere.rotation.y += 0.01;
+        cone.rotation.x += 0.01;
+        cone.rotation.y += 0.01;
+
+        renderer.render( scene, camera );
+    };
+
+    animate();
+
+</script>
+</body>
+</html>
